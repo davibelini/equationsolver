@@ -1,54 +1,58 @@
 from Token import Token
 
-numbers = '0123456789'
-
 class Lexer():
     def __init__(self, text):
-        self.tokens = []
         self.text = iter(text)
+        self.current_char = None
         self.advance()
     def advance(self):
         try:
-            self.current_char = next(self.text)
+            self.current_char = next(self.text) # First next() goes to first element
         except StopIteration:
             self.current_char = None
-            # print("ERROR: self.current_char is NoneType.")
-    def get_number(self):
+    def generate_number(self):
         points = 0
-        string = self.current_char
-        self.advance()
-        while self.current_char != None and (self.current_char == '.' or self.current_char in numbers):
+        number = ''
+        while self.current_char != None and (self.current_char == '.' or self.current_char.isnumeric()):
             if self.current_char == '.':
                 points += 1
                 if points > 1:
-                    break
-        
-            string += self.current_char
-        return Token("NUMBER", float(string))
-    def get_tokens(self):
+                    print(f"Too many decimal points in one number: '{points}'")
+                    exit()
+            number += self.current_char
+            self.advance()
+        if points > 0:
+            if number.startswith('.'):
+               number = '0' + number
+            return Token("NUMBER", float(number))
+        return Token("NUMBER", int(number))
+    def generate_tokens(self):
+        self.tokens = []
         while self.current_char != None:
-            if self.current_char in " \n\t":
+            if self.current_char in ' \t\n':
                 self.advance()
-            if self.current_char.isalpha():
+            elif self.current_char.isnumeric() or self.current_char == '.':
+                self.tokens.append(self.generate_number())
+                self.advance()
+            elif self.current_char == '+': # Add
+                self.tokens.append(Token("ADD"))
+                self.advance()
+            elif self.current_char == '-': # Subtract
+                self.tokens.append(Token("SUBTRACT"))
+                self.advance()
+            elif self.current_char == '*': # Multiply
+                self.tokens.append(Token("MULTIPLY"))
+                self.advance()
+            elif self.current_char == '/': # Divide
+                self.tokens.append(Token("DIVIDE"))
+                self.advance()
+            elif self.current_char == 'q': # Quit
+                self.tokens.append(Token("QUIT"))
+                quit()
+            elif self.current_char != 'q' and self.current_char.isalpha():
                 self.tokens.append(Token("VARIABLE", self.current_char))
                 self.advance()
-            if self.current_char == '=':
-                self.tokens.append(Token("EQUAL", self.current_char))
+            elif self.current_char == '=':
+                self.tokens.append(Token("EQUAL"))
                 self.advance()
-            if self.current_char in numbers or self.current_char.startswith('.') or self.current_char.endswith('.'):
-                self.tokens.append(self.get_number())
-                self.advance()
-            if self.current_char == '+':
-                self.tokens.append(Token("PLUS", self.current_char))
-                self.advance()
-            if self.current_char == '-':
-                self.tokens.append(Token("MINUS", self.current_char))
-                self.advance()
-            if self.current_char == '*':
-                self.tokens.append(Token("MULTIPLY", self.current_char))
-                self.advance()
-            if self.current_char == '/':
-                self.tokens.append(Token("DIVIDE", self.current_char))
-                self.advance()
-            # TODO: Continue(parenthesis)
         return self.tokens
