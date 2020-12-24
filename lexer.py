@@ -1,4 +1,5 @@
 from Token import Token
+import os
 
 class Lexer():
     def __init__(self, text):
@@ -33,26 +34,32 @@ class Lexer():
                 self.advance()
             elif self.current_char.isnumeric() or self.current_char == '.':
                 self.tokens.append(self.generate_number())
-                self.advance()
             elif self.current_char == '+': # Add
+                self.advance()
                 self.tokens.append(Token("ADD"))
-                self.advance()
             elif self.current_char == '-': # Subtract
+                self.advance()
                 self.tokens.append(Token("SUBTRACT"))
-                self.advance()
             elif self.current_char == '*': # Multiply
+                self.advance()
                 self.tokens.append(Token("MULTIPLY"))
-                self.advance()
             elif self.current_char == '/': # Divide
-                self.tokens.append(Token("DIVIDE"))
                 self.advance()
+                self.tokens.append(Token("DIVIDE"))
             elif self.current_char == 'q': # Quit
-                self.tokens.append(Token("QUIT"))
                 quit()
             elif self.current_char != 'q' and self.current_char.isalpha():
                 self.tokens.append(Token("VARIABLE", self.current_char))
                 self.advance()
             elif self.current_char == '=':
-                self.tokens.append(Token("EQUAL"))
                 self.advance()
+                self.tokens.append(Token("EQUAL"))
+            elif self.current_char == '(':
+                self.advance()
+                self.tokens.append(Token("LPAR"))
+            elif self.current_char == ')':
+                self.advance()
+                self.tokens.append(Token("RPAR"))
+            else:
+                return f"ERROR: illegal character '{self.current_char}'"
         return self.tokens
