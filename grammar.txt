@@ -1,0 +1,13 @@
+# EBNF grammar
+
+expr    : term ((PLUS | MINUS) term)* # Means 'expr is a term followed by a - or a + and then another term and then maybe a + or a - and then a term(repeat)'
+
+term    : factor ((MUL | DIV) factor)* # Same
+
+factor  : (PLUS | MINUS) factor
+        : power
+
+power   : atom (POW factor)*
+
+atom    : INT | FLOAT
+        : LPAR expr RPAR
