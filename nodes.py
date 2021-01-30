@@ -1,5 +1,3 @@
-# The purpose of nodes is that when the interpreter analises the nodes it knows what operation to do.
-
 class NumberNode():
     def __init__(self, value):
         self.value = value
@@ -39,6 +37,20 @@ class DivideNode():
     def __repr__(self):
         return f"({self.node_a} / {self.node_b})"
 
+class PlusNode():
+    def __init__(self, node_a):
+        self.node_a = node_a
+
+    def __repr__(self):
+        return f"(+{self.node_a})"
+
+class MinusNode():
+    def __init__(self, node_a):
+        self.node_a = node_a
+
+    def __repr__(self):
+        return f"(-{self.node_a})"
+
 class PowerNode():
     def __init__(self, node_a, node_b):
         self.node_a = node_a
@@ -46,3 +58,11 @@ class PowerNode():
 
     def __repr__(self):
         return f"({self.node_a} ^ {self.node_b})"
+
+class VarAssignNode:
+    def __init__(self, var_name, var_value):
+        self.var_name = var_name
+        self.var_value = var_value
+
+    def __repr__(self):
+        return f"({self.var_name}={self.var_value})"
