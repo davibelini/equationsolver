@@ -1,6 +1,7 @@
 # EBNF grammar
 
-expr    : variable equals expr
+expr    : CLEAR
+        : variable equals expr
         : term (PLUS | MINUS term)*
 
 term    : factor (MUL | DIV factor)*                                                                    # done

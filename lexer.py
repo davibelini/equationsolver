@@ -1,5 +1,6 @@
 from Token import Token
 import os
+from version import *
 
 class Lexer():
     def __init__(self, text):
@@ -46,11 +47,15 @@ class Lexer():
             elif self.current_char == '/': # Divide
                 self.advance()
                 self.tokens.append(Token("DIVIDE"))
-            elif self.current_char == 'q': # Quit
-                quit()
-            elif self.current_char != 'q' and self.current_char.isalpha():
+            elif self.current_char not in 'qc' and self.current_char.isalpha():
                 self.tokens.append(Token("VARIABLE", self.current_char))
                 self.advance()
+            elif self.current_char == 'q': # Quit
+                quit()
+            elif  self.current_char == 'c':
+                self.advance()
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print("equationsolver@{}".format(version))
             elif self.current_char == '=':
                 self.advance()
                 self.tokens.append(Token("EQUAL"))

@@ -33,6 +33,7 @@ class Parser():
             self.advance()
             if self.current_token.type != "EQUAL":
                 self.raise_error(); return
+            self.advance()
             var_value = self.expression()
             return VarAssignNode(var_name, var_value)
 
