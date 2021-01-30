@@ -54,6 +54,9 @@ class Lexer():
             elif self.current_char == '=':
                 self.advance()
                 self.tokens.append(Token("EQUAL"))
+            elif self.current_char == '^':
+                self.advance()
+                self.tokens.append(Token("POWER"))
             elif self.current_char == '(':
                 self.advance()
                 self.tokens.append(Token("LPAR"))

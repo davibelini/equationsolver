@@ -1,5 +1,6 @@
 import os
 from lexer import Lexer
+from parse import Parser
 import os
 os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -10,4 +11,5 @@ while True:
     text = input('solve > ')
     lexer = Lexer(text)
     tokens = lexer.generate_tokens()
-    print(tokens)
+    ast = Parser(tokens).parse()
+    print(ast)

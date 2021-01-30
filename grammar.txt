@@ -1,0 +1,14 @@
+# EBNF grammar
+
+expr    : variable equals expr
+        : term (PLUS | MINUS term)*
+
+term    : factor (MUL | DIV factor)*                                                                    # done
+
+factor  : (PLUS | MINUS) atom                                      # done
+        : power
+
+power   : atom (POW factor)*                                                                            # done
+
+atom    : INT | FLOAT                                                                                   # done
+        : LPAR expr RPAR
